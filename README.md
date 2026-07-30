@@ -1,8 +1,22 @@
-# Dev — Portfolio
+# dev — Portfolio
 
-A portfolio built to feel like a product, not a résumé. Dark, editorial, interaction-first.
+<!-- #### 🔗 [Visit Portfolio]() -->
 
-Stack: **Vite + React + TypeScript + TailwindCSS + Framer Motion + Three.js**.
+An interaction-first portfolio built to feel like a product.
+
+Built to explore the current capabilities of AI-assisted frontend development. This project experiments with rich interactions, animations, and 3D effects while using AI as a collaborative development tool, highlighting where engineering judgment and iterative refinement remain essential.
+
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=fff)
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=fff)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?logo=framer&logoColor=fff)
+![Three.js](https://img.shields.io/badge/Three.js-000000?logo=threedotjs&logoColor=fff)
+![React Router](https://img.shields.io/badge/React_Router-CA4245?logo=reactrouter&logoColor=fff)
+
+<!-- ![Vercel](https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=fff) -->
+
+![Portfolio Preview](./public/preview.png)
 
 ## Run
 
@@ -17,48 +31,46 @@ npm run preview  # serve the production build
 
 ## Routes
 
-| Path | Page |
-|------|------|
-| `/` | Home — single-scroll story (Landing → Contact) |
-| `/work` | All case studies (index) |
-| `/work/:id` | Full case-study article (`connect-4`, `woody`) |
-| `/notes` | All engineering notes (index) |
-| `/notes/:id` | Full note |
-
-Growable content (case studies, notes) lives in `src/data/` — add an entry and its index row + detail route appear automatically. `public/_redirects` and `vercel.json` provide SPA fallback for deep links.
+| Path         | Page                                           |
+| ------------ | ---------------------------------------------- |
+| `/`          | Home — single-scroll story (Landing → Contact) |
+| `/work`      | All case studies (index)                       |
+| `/work/:id`  | Full case-study article (`connect-4`, `woody`) |
+| `/notes`     | All engineering notes (index)                  |
+| `/notes/:id` | Full note                                      |
 
 ## Structure
 
-```
+```text
 src/
-  components/
-    background/   ThreeBackground (dot field), Spotlight
-    command/      CommandPalette (⌘K), MiniTerminal, ShortcutsDialog, commands
-    layout/       Header, FloatingDock, ScrollProgress, ScrollManager, Section, Reveal
-    previews/     ProjectPreview, NotePreview  ← brief list rows → detail routes
-    ui/           Logo, MagneticButton, StatusPill, Marquee, CursorCard
-  hooks/          usePrefersReducedMotion, useMagnetic, useScrollSpy, useKeyboardShortcuts
-  lib/            motion (variants), sections (registry + scroll), nav (cross-route scroll)
-  data/           profile, projects, notes, exploring  ← single source of truth
-  sections/       Landing, HowIThink, Experience, CaseStudies, CaseStudy,
-                  Notes, Exploring, Achievements, Contact
-  pages/          Home, WorkIndex, WorkDetail, NotesIndex, NoteDetail
+├── components/
+│   ├── background/      # Three.js background, spotlight
+│   ├── command/         # Command palette, terminal, shortcuts
+│   ├── layout/          # Header, dock, section wrappers, scroll utilities
+│   ├── previews/        # Project and note preview cards
+│   └── ui/              # Reusable UI components
+│
+├── data/                # Single source of truth for content
+│   ├── profile.ts
+│   ├── projects.ts
+│   ├── notes.ts
+│   └── exploring.ts
+│
+├── hooks/               # Custom React hooks
+├── lib/                 # Shared utilities, motion variants, navigation
+├── pages/               # Route-level pages
+├── sections/            # Home page sections
+├── assets/              # Static assets (if used)
+├── styles/              # Global styles (if used)
+├── App.tsx
+└── main.tsx
 ```
-
-All copy lives in `src/data/`. Edit those files — no text is hard-coded in components.
-
-## Make it yours
-
-- **Links / email** — `src/data/profile.ts` (`socials`, `email`). Placeholder GitHub/LinkedIn handles are set; swap them.
-- **Résumé** — drop `resume.pdf` into `public/`. The `resume` terminal command, palette action, and Contact button point there.
-- **Screenshots** — each case study frame expects `/public/<project-id>.png` (e.g. `connect-4.png`, `woody.png`).
-- **Favicon / OG** — `public/favicon.svg`, `public/og.svg`.
 
 ## Interactions
 
 - `⌘/Ctrl + K` — command palette (search sections, projects, actions)
 - `G` home · `P` case studies · `C` contact · `?` shortcuts
-- Mini terminal (in *How I Think*): `whoami`, `projects`, `experience`, `learning`, `resume`, `help`, `clear`
+- Mini terminal (in _How I Think_): `whoami`, `projects`, `experience`, `learning`, `resume`, `help`, `clear`
 - Magnetic buttons, cursor-aware cards, mouse spotlight, animated dot-field background, scroll progress, floating dock, marquee, section reveals
 
 Everything motion-heavy is gated behind `prefers-reduced-motion`.
