@@ -86,6 +86,16 @@ export const projects: Project[] = [
       "Spectator mode as a read-only subscription to the room node.",
       "Reconnection grace window with a rejoin token so a refresh never forfeits a match.",
     ],
+    links: [
+      {
+        label: 'Source Code',
+        href: 'github link'
+      },
+      {
+        label: 'Live Demo',
+        href: 'live link'
+      }
+    ]
   },
   {
     id: "woody",
@@ -148,5 +158,11 @@ export const projects: Project[] = [
       "Caching layer in front of catalog reads to cut repeat query load.",
       "Order lifecycle states (pending → fulfilled) surfaced in the dashboard.",
     ],
+    links: [
+      {
+        label: 'Source Code',
+        href: 'github link'
+      }
+    ]
   },
 ];
