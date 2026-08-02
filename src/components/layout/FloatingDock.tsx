@@ -17,7 +17,7 @@ export function FloatingDock({ onOpenPalette }: FloatingDockProps) {
       initial={{ y: 40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.6, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed bottom-5 left-1/2 z-40 -translate-x-1/2"
+      className="fixed bottom-5 left-1/2 z-40 hidden -translate-x-1/2 md:block"
     >
       <div className="flex items-center gap-1 rounded-full border border-border bg-surface/80 p-1.5 shadow-[0_8px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl">
         {dockItems.map((item) => {

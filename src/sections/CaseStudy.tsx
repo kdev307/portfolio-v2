@@ -93,8 +93,13 @@ export function CaseStudy({
                             {project.id}
                         </span>
                     </div>
-                    <div className="flex h-56 items-center justify-center md:h-72">
-                        <div className="text-center">
+                    <div className="relative flex h-64 items-center justify-center md:h-80">
+                        {/* faint blueprint grid */}
+                        <div
+                            aria-hidden
+                            className="pointer-events-none absolute inset-0 opacity-[0.5] [background-image:linear-gradient(theme(colors.border)_1px,transparent_1px),linear-gradient(90deg,theme(colors.border)_1px,transparent_1px)] [background-size:28px_28px] [mask-image:radial-gradient(circle_at_center,black,transparent_75%)]"
+                        />
+                        <div className="relative text-center">
                             <div
                                 className={`font-mono text-sm ${accentText[project.accent]}`}
                             >

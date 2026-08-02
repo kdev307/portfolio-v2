@@ -10,7 +10,9 @@ import {
 import { Header } from "@/components/layout/Header";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { ScrollManager } from "@/components/layout/ScrollManager";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { Spotlight } from "@/components/background/Spotlight";
+import { CustomCursor } from "@/components/ui/CustomCursor";
 import { FloatingDock } from "@/components/layout/FloatingDock";
 import { CommandPalette } from "@/components/command/CommandPalette";
 import { ShortcutsDialog } from "@/components/command/ShortcutsDialog";
@@ -66,6 +68,7 @@ function Chrome() {
 
       <ScrollProgress />
       <ScrollManager />
+      <CustomCursor />
       <Header onOpenPalette={openPalette} />
 
       {/* skip link for keyboard users */}
@@ -88,6 +91,7 @@ function Chrome() {
       </div>
 
       {isHome && <FloatingDock onOpenPalette={openPalette} />}
+      <ScrollToTop />
 
       <CommandPalette
         open={paletteOpen}

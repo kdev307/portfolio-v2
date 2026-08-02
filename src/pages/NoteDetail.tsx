@@ -2,6 +2,9 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { notes } from "@/data/notes";
+import { PageBackdrop } from "@/components/graphics/PageBackdrop";
+import { ShimmerReveal } from "@/components/ui/ShimmerReveal";
+import { NoteDetailSkeleton } from "@/components/ui/Skeleton";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 export function NoteDetail() {
@@ -14,6 +17,8 @@ export function NoteDetail() {
   const next = notes[(idx + 1) % notes.length];
 
   return (
+    <>
+    <PageBackdrop label="NOTES" />
     <main className="relative z-10 mx-auto w-full max-w-3xl px-6 pb-24 pt-28 sm:px-8 md:pt-32">
       <Link
         to="/notes"
@@ -23,6 +28,7 @@ export function NoteDetail() {
         All notes
       </Link>
 
+      <ShimmerReveal skeleton={<NoteDetailSkeleton />}>
       <motion.article
         variants={fadeUp}
         initial="hidden"
@@ -66,6 +72,7 @@ export function NoteDetail() {
           </motion.ul>
         </div>
       </motion.article>
+      </ShimmerReveal>
 
       {next.id !== note.id && (
         <Link
@@ -82,5 +89,6 @@ export function NoteDetail() {
         </Link>
       )}
     </main>
+    </>
   );
 }

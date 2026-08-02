@@ -3,7 +3,9 @@ import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Reveal } from "@/components/layout/Reveal";
 import { ProjectPreview } from "@/components/previews/ProjectPreview";
-import { projects } from "@/data/projects";
+import { ShimmerReveal } from "@/components/ui/ShimmerReveal";
+import { ListSkeleton } from "@/components/ui/Skeleton";
+import { visibleProjects as projects } from "@/data/projects";
 
 export function CaseStudies() {
   return (
@@ -18,13 +20,17 @@ export function CaseStudies() {
         to read the full story.
       </p>
 
-      <div>
-        {projects.map((p, i) => (
-          <Reveal key={p.id} delay={i * 0.05}>
-            <ProjectPreview project={p} index={i} />
-          </Reveal>
-        ))}
-      </div>
+      <ShimmerReveal
+        skeleton={<ListSkeleton rows={projects.length} variant="project" />}
+      >
+        <div>
+          {projects.map((p, i) => (
+            <Reveal key={p.id} delay={i * 0.05}>
+              <ProjectPreview project={p} index={i} />
+            </Reveal>
+          ))}
+        </div>
+      </ShimmerReveal>
 
       <Reveal delay={0.1}>
         <Link

@@ -3,9 +3,10 @@ import * as THREE from "three";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
- * Subtle animated dot field. A grid of points on a plane drifts on a slow
- * sine wave and parallaxes gently toward the pointer. Rendered once, paused
- * when off-screen or when reduced motion is requested.
+ * Ambient dot field. Points are scattered across a wide plane (jittered off a
+ * grid so they read as a field, not a lattice) and ride a continuous travelling
+ * wave — two sine fronts crossing on the Z axis, phase always advancing. Gentle
+ * pointer parallax on top. Paused off-screen and under reduced-motion.
  */
 export function ThreeBackground() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -20,7 +21,8 @@ export function ThreeBackground() {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, width() / height(), 0.1, 100);
-    camera.position.set(0, 0, 14);
+    camera.position.set(0, 0, 15);
+    camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -31,24 +33,29 @@ export function ThreeBackground() {
     renderer.setSize(width(), height());
     mount.appendChild(renderer.domElement);
 
-    // Build a grid of points.
-    const GX = 46;
-    const GY = 26;
-    const GAP = 0.62;
+    // Wide, dense, jittered field so dots reach every corner of the screen.
+    const GX = 70;
+    const GY = 44;
+    const GAP = 0.66;
+    const JITTER = 0.42;
     const count = GX * GY;
+
     const positions = new Float32Array(count * 3);
-    const base = new Float32Array(count * 2);
+    const base = new Float32Array(count * 3); // bx, by, random phase
 
     let i = 0;
     for (let x = 0; x < GX; x++) {
       for (let y = 0; y < GY; y++) {
-        const px = (x - GX / 2) * GAP;
-        const py = (y - GY / 2) * GAP;
+        const jx = (Math.random() - 0.5) * 2 * JITTER;
+        const jy = (Math.random() - 0.5) * 2 * JITTER;
+        const px = (x - GX / 2) * GAP + jx;
+        const py = (y - GY / 2) * GAP + jy;
         positions[i * 3] = px;
         positions[i * 3 + 1] = py;
         positions[i * 3 + 2] = 0;
-        base[i * 2] = px;
-        base[i * 2 + 1] = py;
+        base[i * 3] = px;
+        base[i * 3 + 1] = py;
+        base[i * 3 + 2] = Math.random() * Math.PI * 2; // per-point phase
         i++;
       }
     }
@@ -56,25 +63,26 @@ export function ThreeBackground() {
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
 
-    // Soft round sprite so dots glow rather than being hard squares.
     const sprite = makeDotTexture();
     const material = new THREE.PointsMaterial({
-      size: 0.09,
+      size: 0.1,
       map: sprite,
       transparent: true,
       color: new THREE.Color("#BEF264"),
-      opacity: 0.42,
+      opacity: 0.4,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
       sizeAttenuation: true,
     });
 
     const points = new THREE.Points(geometry, material);
+    // Tilt the whole field slightly so the travelling wave reads with depth.
+    points.rotation.x = -0.45;
     scene.add(points);
 
     // Pointer parallax (smoothed).
-    const pointer = { x: 0, y: 0 };
     const target = { x: 0, y: 0 };
+    const pointer = { x: 0, y: 0 };
     const onPointer = (e: PointerEvent) => {
       target.x = (e.clientX / window.innerWidth - 0.5) * 2;
       target.y = (e.clientY / window.innerHeight - 0.5) * 2;
@@ -88,43 +96,51 @@ export function ThreeBackground() {
     };
     window.addEventListener("resize", onResize);
 
-    // Pause when tab hidden or scrolled far away.
     let running = true;
     const io = new IntersectionObserver(
       ([entry]) => {
+        const wasStopped = !running;
         running = entry.isIntersecting;
-        if (running && !reduced) loop();
+        if (running && wasStopped && !reduced) loop();
       },
       { threshold: 0 }
     );
     io.observe(mount);
 
     const posAttr = geometry.getAttribute("position") as THREE.BufferAttribute;
+    const arr = posAttr.array as Float32Array;
     let raf = 0;
     let t = 0;
 
+    const AMP = 0.72;
+
     const render = () => {
-      pointer.x += (target.x - pointer.x) * 0.04;
-      pointer.y += (target.y - pointer.y) * 0.04;
+      pointer.x += (target.x - pointer.x) * 0.045;
+      pointer.y += (target.y - pointer.y) * 0.045;
 
       for (let k = 0; k < count; k++) {
-        const bx = base[k * 2];
-        const by = base[k * 2 + 1];
+        const bx = base[k * 3];
+        const by = base[k * 3 + 1];
+        const ph = base[k * 3 + 2];
+        // Two crossing travelling waves — continuous, never resets.
         const z =
-          Math.sin(bx * 0.5 + t) * 0.35 + Math.cos(by * 0.5 + t * 0.8) * 0.35;
-        posAttr.array[k * 3 + 2] = z;
+          Math.sin(bx * 0.42 + t) * AMP +
+          Math.cos(by * 0.38 - t * 0.8 + ph * 0.15) * AMP * 0.7;
+        arr[k * 3 + 2] = z;
+        // Slow lateral drift keeps the field from ever looking frozen.
+        arr[k * 3] = bx + Math.sin(t * 0.3 + by) * 0.06;
       }
       posAttr.needsUpdate = true;
 
-      points.rotation.x = pointer.y * 0.18;
-      points.rotation.y = pointer.x * 0.22;
+      points.rotation.y = pointer.x * 0.16;
+      points.rotation.x = -0.45 + pointer.y * 0.12;
 
       renderer.render(scene, camera);
     };
 
     const loop = () => {
       if (!running || reduced) return;
-      t += 0.006;
+      t += 0.01;
       render();
       raf = requestAnimationFrame(loop);
     };

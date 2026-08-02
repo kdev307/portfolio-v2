@@ -3,10 +3,15 @@ import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { notes } from "@/data/notes";
 import { NotePreview } from "@/components/previews/NotePreview";
+import { PageBackdrop } from "@/components/graphics/PageBackdrop";
+import { ShimmerReveal } from "@/components/ui/ShimmerReveal";
+import { ListSkeleton } from "@/components/ui/Skeleton";
 import { fadeUp } from "@/lib/motion";
 
 export function NotesIndex() {
   return (
+    <>
+    <PageBackdrop label="NOTES" />
     <main className="relative z-10 mx-auto min-h-svh w-full max-w-content px-6 pb-32 pt-28 sm:px-8 md:pt-32">
       <Link
         to="/"
@@ -32,11 +37,17 @@ export function NotesIndex() {
         </p>
       </motion.header>
 
-      <div className="mt-14">
-        {notes.map((note, i) => (
-          <NotePreview key={note.id} note={note} index={i} />
-        ))}
-      </div>
+      <ShimmerReveal
+        className="mt-14"
+        skeleton={<ListSkeleton rows={notes.length} variant="note" />}
+      >
+        <div>
+          {notes.map((note, i) => (
+            <NotePreview key={note.id} note={note} index={i} />
+          ))}
+        </div>
+      </ShimmerReveal>
     </main>
+    </>
   );
 }

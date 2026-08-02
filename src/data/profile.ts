@@ -75,7 +75,7 @@ export const profile = {
 
 
   // Drop your file at public/resume.pdf
-  resumeHref: "/DevKumar_Resume_07-26.pdf",
+  resumeHref: "public/DevKumar_Resume_07-26.pdf",
 } as const;
 
 export const principles: Principle[] = [

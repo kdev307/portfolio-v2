@@ -22,9 +22,85 @@ export interface Project {
   metrics: Metric[];
   future: string[];
   links?: { label: string; href: string }[];
+  /** Set true to keep the data but hide it from all UI (lists, routes, palette). */
+  hidden?: boolean;
 }
 
 export const projects: Project[] = [
+  {
+    id: "aem-platform",
+    // Temporarily hidden from the UI. Flip to false (or delete) to show again.
+    hidden: true,
+    name: "Enterprise AEM Platform",
+    tagline:
+      "Keeping dozens of independently-owned packages fast, consistent, and shippable — inside enterprise AEM",
+    year: "Present",
+    kind: "Professional · Auriga IT",
+    accent: "orange",
+    stack: [
+      "AEM",
+      "React",
+      "TypeScript",
+      "Micro Frontends",
+      "Shared Component Library",
+      "Critical CSS",
+      "Dispatcher",
+      "Akamai",
+    ],
+    summary:
+      "My day-to-day at Auriga IT: building and maintaining production Adobe Experience Manager applications where many teams ship independently yet compose into one coherent, fast experience. The client specifics live under NDA — what follows is the engineering shape of the work.",
+    sections: [
+      {
+        heading: "Problem",
+        body: "At enterprise scale, an AEM front end isn't one app — it's dozens of independently-owned packages that have to render as a single, consistent page. Every team wants to move on its own schedule, but the user sees one product: one design language, one performance budget, one broken component away from a support ticket. The problem is coordination without a bottleneck — letting teams stay independent while the composed experience stays coherent and quick.",
+      },
+      {
+        heading: "Architecture",
+        body: "A micro-frontend estate where independently-deployed packages compose into AEM-authored pages, with a shared component library acting as the contract every team builds against. Rendering spans server and client, so the SSR/hydration boundary is a first-class surface; delivery spans Dispatcher and Akamai, so caching is reasoned about per layer rather than as an afterthought.",
+        bullets: [
+          "Shared component library as the single source of UI truth — teams consume it instead of re-implementing, so consistency is structural, not enforced by review.",
+          "Cross-package composition: features span multiple packages and must land without breaking downstream consumers.",
+          "Layered caching — Dispatcher and Akamai — where the right response is served from the right layer and invalidated when it should be.",
+        ],
+      },
+      {
+        heading: "Interesting Decisions",
+        body: "Treating the shared library like a public API. A change there ripples across every consumer at once, so it's versioned and reasoned about the way you'd reason about a breaking API change — not a casual edit. And treating the hydration boundary as a contract: the server render is a promise the first client render has to honour byte-for-byte before it's allowed to change.",
+        bullets: [
+          "Version the shared library like an API — breaking changes are deliberate and communicated, not discovered in production.",
+          "Critical CSS on authored pages so first paint isn't blocked on the full stylesheet.",
+          "Cache strategy chosen per layer — what belongs at the edge (Akamai) versus the Dispatcher versus the app.",
+        ],
+      },
+      {
+        heading: "Challenges",
+        body: "The hard problems are the ones that only show up at scale: a cross-package change that quietly breaks a consumer three teams away, an SSR/hydration mismatch where server markup and client render disagree, and cache invalidation that serves stale content — or misses the cache entirely. Each one is a debugging problem before it's a fix: find the exact boundary that drifted, then make it not drift.",
+        bullets: [
+          "Trace hydration mismatches to the precise input that differed between server and client, not the component that logged the warning.",
+          "Ship cross-package changes with a story for how they land, so 'independent' teams don't become silently coupled.",
+          "Tune Dispatcher and Akamai so caching helps rather than hides bugs — correct invalidation over aggressive caching.",
+        ],
+      },
+      {
+        heading: "Outcome",
+        body: "A platform where teams ship independently and the composed experience still reads as one product — consistent because the shared library makes it so, and fast because performance is treated as a feature at every layer from critical CSS to the edge cache. The work is ongoing; the shape holds because the contracts hold.",
+      },
+      {
+        heading: "Lessons Learned",
+        body: "At scale, contracts beat coordination — a stable shared interface lets more people move safely than any amount of process. Performance is a feature you design for, not a cleanup pass. And the most valuable debugging skill is finding the exact boundary where two things that should agree stopped agreeing — in hydration, in caching, in a shared component's API.",
+      },
+    ],
+    metrics: [
+      { value: "1", label: "Shared library — the contract every team builds on" },
+      { value: "MFE", label: "Independently-deployed packages, one composed page" },
+      { value: "Edge", label: "Cached at the right layer — Dispatcher to Akamai" },
+    ],
+    future: [
+      "Design tokens beneath the shared library so theming changes propagate without touching component internals.",
+      "Automated visual regression on the shared components to catch cross-package breakage before it ships.",
+      "Explicit performance budgets in CI so time-to-interactive can't quietly regress.",
+    ],
+  },
   {
     id: "connect-4",
     name: "Connect 4",
@@ -166,3 +242,7 @@ export const projects: Project[] = [
     ]
   },
 ];
+
+// What the UI renders — everything not explicitly hidden. Toggle a project's
+// `hidden` flag above to add/remove it without touching any component.
+export const visibleProjects = projects.filter((p) => !p.hidden);

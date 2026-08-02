@@ -3,6 +3,8 @@ import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Reveal } from "@/components/layout/Reveal";
 import { NotePreview } from "@/components/previews/NotePreview";
+import { ShimmerReveal } from "@/components/ui/ShimmerReveal";
+import { ListSkeleton } from "@/components/ui/Skeleton";
 import { notes } from "@/data/notes";
 
 export function Notes() {
@@ -21,13 +23,17 @@ export function Notes() {
         reread.
       </p>
 
-      <div>
-        {preview.map((note, i) => (
-          <Reveal key={note.id} delay={i * 0.04}>
-            <NotePreview note={note} index={i} />
-          </Reveal>
-        ))}
-      </div>
+      <ShimmerReveal
+        skeleton={<ListSkeleton rows={preview.length} variant="note" />}
+      >
+        <div>
+          {preview.map((note, i) => (
+            <Reveal key={note.id} delay={i * 0.04}>
+              <NotePreview note={note} index={i} />
+            </Reveal>
+          ))}
+        </div>
+      </ShimmerReveal>
 
       <Reveal delay={0.1}>
         <Link

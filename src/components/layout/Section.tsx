@@ -30,11 +30,12 @@ export function Section({
         <header className="mb-12 md:mb-16">
           {(label || index) && (
             <div className="mb-5 flex items-center gap-3">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
               {index && (
                 <span className="font-mono text-xs text-muted/70">{index}</span>
               )}
               {label && <span className="section-label">{label}</span>}
-              <span className="h-px flex-1 bg-border" />
+              <span className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
             </div>
           )}
           {title && (

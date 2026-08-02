@@ -29,8 +29,75 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <style>
+      #initial-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 22px;
+        background: #0a0a0b;
+        transition: opacity 1s ease, visibility 1s ease;
+      }
+      #initial-loader.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+      #initial-loader .il-brand {
+        font-family: Inter, system-ui, -apple-system, sans-serif;
+        font-weight: 700;
+        font-size: clamp(24px, 6vw, 30px);
+        letter-spacing: -0.02em;
+        color: #f4f4f5;
+      }
+      #initial-loader .il-brand i {
+        color: #bef264;
+        font-style: normal;
+      }
+      #initial-loader .il-bar {
+        position: relative;
+        width: min(160px, 50vw);
+        height: 2px;
+        background: #26262a;
+        border-radius: 9999px;
+        overflow: hidden;
+      }
+      #initial-loader .il-bar span {
+        position: absolute;
+        top: 0;
+        left: -40%;
+        height: 100%;
+        width: 40%;
+        background: #bef264;
+        border-radius: 9999px;
+        animation: il-load 1.5s ease-in-out infinite;
+      }
+      @keyframes il-load {
+        0% {
+          left: -40%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #initial-loader .il-bar span {
+          left: 0;
+          width: 100%;
+          animation: none;
+        }
+      }
+    </style>
   </head>
   <body>
+    <div id="initial-loader">
+      <div class="il-brand"><i>.</i>dev</div>
+      <div class="il-bar"><span></span></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

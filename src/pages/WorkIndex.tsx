@@ -1,12 +1,17 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
-import { projects } from "@/data/projects";
+import { visibleProjects as projects } from "@/data/projects";
 import { ProjectPreview } from "@/components/previews/ProjectPreview";
+import { PageBackdrop } from "@/components/graphics/PageBackdrop";
+import { ShimmerReveal } from "@/components/ui/ShimmerReveal";
+import { ListSkeleton } from "@/components/ui/Skeleton";
 import { fadeUp } from "@/lib/motion";
 
 export function WorkIndex() {
   return (
+    <>
+    <PageBackdrop label="WORK" />
     <main className="relative z-10 mx-auto min-h-svh w-full max-w-content px-6 pb-32 pt-28 sm:px-8 md:pt-32">
       <Link
         to="/"
@@ -32,11 +37,17 @@ export function WorkIndex() {
         </p>
       </motion.header>
 
-      <div className="mt-14">
-        {projects.map((p, i) => (
-          <ProjectPreview key={p.id} project={p} index={i} />
-        ))}
-      </div>
+      <ShimmerReveal
+        className="mt-14"
+        skeleton={<ListSkeleton rows={projects.length} variant="project" />}
+      >
+        <div>
+          {projects.map((p, i) => (
+            <ProjectPreview key={p.id} project={p} index={i} />
+          ))}
+        </div>
+      </ShimmerReveal>
     </main>
+    </>
   );
 }

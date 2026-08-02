@@ -1,7 +1,10 @@
 import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { projects } from "@/data/projects";
+import { visibleProjects as projects } from "@/data/projects";
 import { CaseStudy } from "@/sections/CaseStudy";
+import { PageBackdrop } from "@/components/graphics/PageBackdrop";
+import { ShimmerReveal } from "@/components/ui/ShimmerReveal";
+import { CaseStudySkeleton } from "@/components/ui/Skeleton";
 
 export function WorkDetail() {
   const { id } = useParams();
@@ -13,6 +16,8 @@ export function WorkDetail() {
   const next = projects[(idx + 1) % projects.length];
 
   return (
+    <>
+    <PageBackdrop label="WORK" />
     <main className="relative z-10 mx-auto w-full max-w-content px-6 pb-24 pt-28 sm:px-8 md:pt-32">
       <Link
         to="/work"
@@ -22,7 +27,9 @@ export function WorkDetail() {
         All case studies
       </Link>
 
-      <CaseStudy project={project} index={idx} />
+      <ShimmerReveal skeleton={<CaseStudySkeleton />}>
+        <CaseStudy project={project} index={idx} />
+      </ShimmerReveal>
 
       {/* next project */}
       {next.id !== project.id && (
@@ -40,5 +47,6 @@ export function WorkDetail() {
         </Link>
       )}
     </main>
+    </>
   );
 }

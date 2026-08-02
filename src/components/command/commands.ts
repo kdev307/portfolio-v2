@@ -15,7 +15,7 @@ import {
   Keyboard,
 } from "lucide-react";
 import { profile } from "@/data/profile";
-import { projects } from "@/data/projects";
+import { visibleProjects as projects } from "@/data/projects";
 import { notes } from "@/data/notes";
 
 export interface CommandItem {

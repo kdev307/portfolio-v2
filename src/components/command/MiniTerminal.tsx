@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { scrollToSection } from "@/lib/sections";
+import { useTilt } from "@/hooks/useTilt";
 import { profile } from "@/data/profile";
-import { projects } from "@/data/projects";
+import { visibleProjects as projects } from "@/data/projects";
 import { exploring } from "@/data/exploring";
 
 interface Line {
@@ -79,6 +80,7 @@ export function MiniTerminal() {
   const [hIndex, setHIndex] = useState(-1);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const tilt = useTilt<HTMLDivElement>({ max: 9, scale: 1.02 });
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
@@ -121,10 +123,29 @@ export function MiniTerminal() {
   };
 
   return (
-    <div
-      className="overflow-hidden rounded-xl border border-border bg-[#0B0B0D] font-mono text-[13px] shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
-      onClick={() => inputRef.current?.focus()}
-    >
+    <div className="[perspective:1200px]">
+      <div
+        ref={tilt.ref}
+        {...tilt.handlers}
+        onClick={() => inputRef.current?.focus()}
+        style={{
+          transform:
+            "rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--tscale,1))",
+          transformStyle: "preserve-3d",
+        }}
+        className="group relative overflow-hidden rounded-xl border border-border bg-[#0B0B0D] font-mono text-[13px] shadow-[0_20px_60px_rgba(0,0,0,0.45)] transition-transform duration-200 ease-out will-change-transform"
+      >
+        {/* pointer glare */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-10"
+          style={{
+            opacity: "var(--gop,0)",
+            background:
+              "radial-gradient(340px circle at var(--gx,50%) var(--gy,50%), rgba(190,242,100,0.10), transparent 60%)",
+            transition: "opacity 250ms ease",
+          }}
+        />
       <div className="flex items-center gap-2 border-b border-border bg-surface/60 px-4 py-2.5">
         <span className="h-3 w-3 rounded-full bg-[#FF5F57]" />
         <span className="h-3 w-3 rounded-full bg-[#FEBC2E]" />
@@ -169,6 +190,7 @@ export function MiniTerminal() {
             className="flex-1 bg-transparent text-text caret-accent outline-none"
           />
         </div>
+      </div>
       </div>
     </div>
   );
