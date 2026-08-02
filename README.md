@@ -1,6 +1,6 @@
 # dev — Portfolio
 
-<!-- #### 🔗 [Visit Portfolio]() -->
+#### 🔗 [Visit Portfolio]("https://kdev307.github.io/")
 
 An interaction-first portfolio built to feel like a product.
 
