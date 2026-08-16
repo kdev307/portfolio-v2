@@ -1,11 +1,5 @@
-import { Suspense, lazy, useCallback, useState } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useLocation,
-  Navigate,
-} from "react-router-dom";
+import { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import { Header } from "@/components/layout/Header";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
@@ -24,6 +18,7 @@ import { WorkIndex } from "@/pages/WorkIndex";
 import { WorkDetail } from "@/pages/WorkDetail";
 import { NotesIndex } from "@/pages/NotesIndex";
 import { NoteDetail } from "@/pages/NoteDetail";
+import { NotFound } from "@/pages/NotFound";
 
 // Three.js is heavy — load it after first paint so it never blocks content.
 const ThreeBackground = lazy(() =>
@@ -52,6 +47,17 @@ function Chrome() {
     onGoContact: () => goSection("contact"),
     onHelp: () => setShortcutsOpen((o) => !o),
   });
+
+  // Global Escape — closes any open overlay regardless of where focus is.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setPaletteOpen(false);
+      setShortcutsOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
     <>
@@ -86,7 +92,7 @@ function Chrome() {
           <Route path="/work/:id" element={<WorkDetail />} />
           <Route path="/notes" element={<NotesIndex />} />
           <Route path="/notes/:id" element={<NoteDetail />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 
@@ -106,9 +112,13 @@ function Chrome() {
   );
 }
 
+// Serve correctly whether at root (Vercel/Netlify) or a subpath (GH Pages).
+// Vite injects BASE_URL from `base`; strip the trailing slash for the router.
+const basename = import.meta.env.BASE_URL.replace(/\/+$/, "") || "/";
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Chrome />
     </BrowserRouter>
   );

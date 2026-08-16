@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:gh": "tsc --noEmit && vite build --base=/portfolio-v2/",
     "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "predeploy": "npm run build:gh && cp dist/index.html dist/404.html && touch dist/.nojekyll",
+    "deploy": "gh-pages -d dist -t"
   },
   "dependencies": {
     "framer-motion": "^11.11.17",
