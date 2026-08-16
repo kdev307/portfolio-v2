@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0A0A0B"/>
+  <g stroke="#141416" stroke-width="1">
+    <path d="M0 158H1200M0 316H1200M0 474H1200M200 0V630M400 0V630M600 0V630M800 0V630M1000 0V630"/>
+  </g>
+  <rect x="100" y="96" width="44" height="44" rx="12" fill="none" stroke="#26262A"/>
+  <path d="M110 106h8a12 12 0 0 1 0 24h-8v-24Z" fill="none" stroke="#BEF264" stroke-width="3.4" stroke-linejoin="round"/>
+  <text x="164" y="128" font-family="Inter, sans-serif" font-size="24" font-weight="600" fill="#8A8A93">Dev · Software Development Engineer</text>
+  <text x="98" y="330" font-family="Inter, sans-serif" font-size="76" font-weight="700" fill="#F4F4F5" letter-spacing="-3">Building thoughtful</text>
+  <text x="98" y="420" font-family="Inter, sans-serif" font-size="76" font-weight="700" fill="#F4F4F5" letter-spacing="-3">web experiences<tspan fill="#BEF264">.</tspan></text>
+  <text x="100" y="510" font-family="JetBrains Mono, monospace" font-size="26" fill="#8A8A93">AEM · React · TypeScript · Micro Frontends</text>
+</svg>
