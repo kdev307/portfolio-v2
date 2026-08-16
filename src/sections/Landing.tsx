@@ -29,11 +29,11 @@ export function Landing({ onOpenPalette }: LandingProps) {
         animate={{ opacity: 0.55, scale: 1 }}
         transition={{ duration: 1.4, delay: 0.3, ease }}
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[min(94vw,880px)] w-[min(94vw,880px)] -translate-x-1/2 -translate-y-1/2"
+        className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[min(92vw,860px)] w-[min(92vw,860px)] -translate-x-1/2 -translate-y-1/2"
       >
         <motion.div
           className="h-full w-full"
-          animate={reduced ? undefined : { scale: [1, 1.05, 1], y: [0, -18, 0] }}
+          animate={reduced ? undefined : { scale: [1, 1.04, 1], y: [0, -16, 0] }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
         >
           <HeroGraphic />
@@ -69,13 +69,13 @@ export function Landing({ onOpenPalette }: LandingProps) {
           </div>
 
           {/* name */}
-          <h2 className="relative inline-block text-3xl font-semibold tracking-tight text-text sm:text-4xl">
+          <h2 className="relative inline-block text-h3 font-semibold tracking-tight text-text">
             <span className="text-accent">.</span>dev
             <span className="absolute -bottom-1 left-0 h-[3px] w-2/5 rounded-full bg-accent" />
           </h2>
 
           {/* designation @ organization */}
-          <p className="relative mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-base text-muted sm:text-lg">
+          <p className="relative mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-lead text-muted">
             <Briefcase className="h-[18px] w-[18px] text-accent" strokeWidth={1.75} />
             <span className="text-text">{profile.role}</span>
             <span className="h-1 w-1 rounded-full bg-accent/70" />
@@ -84,7 +84,7 @@ export function Landing({ onOpenPalette }: LandingProps) {
         </motion.div>
 
         {/* headline — word-by-word reveal */}
-        <h1 className="max-w-4xl text-balance text-5xl font-semibold leading-[1.02] tracking-tightest sm:text-6xl md:text-7xl lg:text-8xl">
+        <h1 className="max-w-4xl text-balance text-display font-semibold tracking-tightest">
           {headlineWords.map((word, i) => (
             <span key={i} className="inline-block overflow-hidden align-baseline">
               <motion.span
@@ -113,7 +113,7 @@ export function Landing({ onOpenPalette }: LandingProps) {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.7, ease }}
-          className="mt-8 max-w-xl text-balance text-lg leading-relaxed text-muted"
+          className="mt-8 max-w-xl text-balance text-lead text-muted"
         >
           {profile.subhead}
         </motion.p>

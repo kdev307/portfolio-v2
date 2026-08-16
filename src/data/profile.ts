@@ -50,21 +50,22 @@ export const profile = {
       href: "https://codepen.io/kdev307",
       handle: "codepen.io/kdev307",
     },
-    {
-      label: "LeetCode",
-      href: "https://leetcode.com/u/kdev307",
-      handle: "leetcode.com/u/kdev307/",
-    },
-    {
-      label: "GeeksForGeeks",
-      href: "https://www.geeksforgeeks.org/profile/kdev307",
-      handle: "geeksforgeeks.org/kdev307",
-    },
-    {
-      label: "Hackerrank",
-      href: "https://www.hackerrank.com/profile/kdev_307",
-      handle: "hackerrank.com/profile/kdev_307",
-    },
+    // Competitive-coding profiles — hidden for now (not my focus). Uncomment to restore.
+    // {
+    //   label: "LeetCode",
+    //   href: "https://leetcode.com/u/kdev307",
+    //   handle: "leetcode.com/u/kdev307/",
+    // },
+    // {
+    //   label: "GeeksForGeeks",
+    //   href: "https://www.geeksforgeeks.org/profile/kdev307",
+    //   handle: "geeksforgeeks.org/kdev307",
+    // },
+    // {
+    //   label: "Hackerrank",
+    //   href: "https://www.hackerrank.com/profile/kdev_307",
+    //   handle: "hackerrank.com/profile/kdev_307",
+    // },
     {
       label: "Email",
       href: "kr30.dev@gmail.com",
@@ -74,9 +75,22 @@ export const profile = {
 
 
 
-  // Drop your file at public/resume.pdf
-  resumeHref: "public/DevKumar_Resume_07-26.pdf",
+  // Résumé: Google Drive link is primary; the bundled PDF is the backup.
+  // Set driveUrl to your Drive share link. Leave it "" to use the local PDF.
+  resume: {
+    driveUrl: "https://drive.google.com/file/d/19nutUTr_vxiIEiiBq32UeEDGQyQ_K86r/view?usp=sharing",
+    fallback: "/DevKumar_Resume_07-26.pdf",
+  },
 } as const;
+
+/**
+ * Resolved résumé link — Drive if provided, otherwise the bundled PDF.
+ * The local file is prefixed with Vite's BASE_URL so it resolves under a
+ * subpath deploy (e.g. GitHub Pages /portfolio-v2/) as well as at root.
+ */
+export const resumeHref: string =
+  profile.resume.driveUrl ||
+  `${import.meta.env.BASE_URL}${profile.resume.fallback.replace(/^\//, "")}`;
 
 export const principles: Principle[] = [
   {

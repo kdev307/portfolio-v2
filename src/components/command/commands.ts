@@ -14,7 +14,7 @@ import {
   FileDown,
   Keyboard,
 } from "lucide-react";
-import { profile } from "@/data/profile";
+import { profile, resumeHref } from "@/data/profile";
 import { visibleProjects as projects } from "@/data/projects";
 import { notes } from "@/data/notes";
 
@@ -92,11 +92,11 @@ export function buildCommands(opts: {
     {
       id: "act-resume",
       title: "View Résumé",
-      hint: profile.resumeHref,
+      hint: "résumé",
       group: "Actions",
       icon: FileDown,
       keywords: "cv resume download pdf",
-      run: () => window.open(profile.resumeHref, "_blank", "noopener"),
+      run: () => window.open(resumeHref, "_blank", "noopener"),
     },
     {
       id: "act-email",

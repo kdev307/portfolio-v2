@@ -50,10 +50,10 @@ export function CaseStudy({
                     </span>
                 </div>
 
-                <h3 className="mt-5 text-4xl font-semibold tracking-tightest text-text md:text-5xl">
+                <h3 className="mt-5 text-h2 font-semibold tracking-tightest text-text">
                     {project.name}
                 </h3>
-                <p className="mt-3 max-w-2xl text-lg text-muted">
+                <p className="mt-3 max-w-2xl text-lead text-muted">
                     {project.tagline}
                 </p>
                 <p className="mt-6 max-w-3xl leading-relaxed text-muted">

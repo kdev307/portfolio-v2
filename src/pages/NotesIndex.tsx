@@ -28,10 +28,10 @@ export function NotesIndex() {
         className="mt-8 max-w-3xl"
       >
         <span className="section-label">Engineering Notes</span>
-        <h1 className="mt-4 text-balance text-4xl font-semibold tracking-tightest sm:text-5xl md:text-6xl">
+        <h1 className="mt-4 text-balance text-h1 font-semibold tracking-tightest">
           Notes to my future self.
         </h1>
-        <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
+        <p className="mt-5 max-w-xl text-lead text-muted">
           Short, opinionated write-ups on the systems I work with. Written to be
           reread, not just read once.
         </p>

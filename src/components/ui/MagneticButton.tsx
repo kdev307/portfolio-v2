@@ -48,7 +48,8 @@ export function MagneticButton({
   const base = `group relative inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-300 active:scale-[0.97] ${variantClasses[variant]} ${className}`;
 
   if (href) {
-    const external = href.startsWith("http");
+    // Open external links and static files (e.g. the résumé PDF) in a new tab.
+    const external = href.startsWith("http") || /\.(pdf|zip|png|jpe?g)$/i.test(href);
     return (
       <a
         href={href}

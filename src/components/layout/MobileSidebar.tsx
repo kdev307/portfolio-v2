@@ -15,7 +15,7 @@ import type { LucideIcon } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { sections } from "@/lib/sections";
 import { useSectionNav } from "@/lib/nav";
-import { profile } from "@/data/profile";
+import { profile, resumeHref } from "@/data/profile";
 
 interface MobileSidebarProps {
   open: boolean;
@@ -173,7 +173,7 @@ export function MobileSidebar({
                 })}
               </div>
               <a
-                href={profile.resumeHref}
+                href={resumeHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-3 flex items-center justify-center gap-2 rounded-lg border border-accent/30 bg-accent/10 py-2.5 text-sm font-medium text-accent transition-colors hover:bg-accent/15"

@@ -47,10 +47,51 @@
         opacity: 0;
         visibility: hidden;
       }
+      /* rounded block with a laser beam tracing its border */
+      #initial-loader .il-card {
+        position: relative;
+        display: grid;
+        place-items: center;
+        padding: 20px 42px;
+        border-radius: 18px;
+        background: #0a0a0b;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      #initial-loader .il-card::before {
+        content: "";
+        position: absolute;
+        z-index: -2;
+        left: -50%;
+        top: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(
+          from 0deg,
+          transparent 0deg 288deg,
+          rgba(190, 242, 100, 0.2) 316deg,
+          #bef264 344deg,
+          #f2ffca 352deg,
+          #bef264 359deg,
+          transparent 360deg
+        );
+        animation: il-spin 2s linear infinite;
+      }
+      /* mask the interior so only a thin border ring shows the beam */
+      #initial-loader .il-card::after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        inset: 2px;
+        border-radius: 16px;
+        background: #0a0a0b;
+      }
       #initial-loader .il-brand {
+        position: relative;
+        z-index: 1;
         font-family: Inter, system-ui, -apple-system, sans-serif;
         font-weight: 700;
-        font-size: clamp(24px, 6vw, 30px);
+        font-size: clamp(26px, 7vw, 34px);
         letter-spacing: -0.02em;
         color: #f4f4f5;
       }
@@ -58,45 +99,24 @@
         color: #bef264;
         font-style: normal;
       }
-      #initial-loader .il-bar {
-        position: relative;
-        width: min(160px, 50vw);
-        height: 2px;
-        background: #26262a;
-        border-radius: 9999px;
-        overflow: hidden;
-      }
-      #initial-loader .il-bar span {
-        position: absolute;
-        top: 0;
-        left: -40%;
-        height: 100%;
-        width: 40%;
-        background: #bef264;
-        border-radius: 9999px;
-        animation: il-load 1.5s ease-in-out infinite;
-      }
-      @keyframes il-load {
-        0% {
-          left: -40%;
-        }
-        100% {
-          left: 100%;
+      @keyframes il-spin {
+        to {
+          transform: rotate(360deg);
         }
       }
       @media (prefers-reduced-motion: reduce) {
-        #initial-loader .il-bar span {
-          left: 0;
-          width: 100%;
+        #initial-loader .il-card::before {
           animation: none;
+          background: #bef264;
         }
       }
     </style>
   </head>
   <body>
     <div id="initial-loader">
-      <div class="il-brand"><i>.</i>dev</div>
-      <div class="il-bar"><span></span></div>
+      <div class="il-card">
+        <span class="il-brand"><i>.</i>dev</span>
+      </div>
     </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

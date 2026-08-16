@@ -37,7 +37,7 @@ export function HeroGraphic() {
   return (
     <svg
       viewBox="0 0 400 400"
-      className="h-full w-full overflow-visible"
+      className="h-full w-full"
       aria-hidden
     >
       <defs>

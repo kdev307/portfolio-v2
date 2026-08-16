@@ -23,6 +23,15 @@ export function Header({ onOpenPalette }: HeaderProps) {
   // Close the drawer whenever the route changes.
   useEffect(() => setMenuOpen(false), [location.pathname]);
 
+  // Close the drawer on Escape.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   return (
     <>
       <header

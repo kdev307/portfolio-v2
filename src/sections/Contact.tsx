@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, ArrowUpRight, Code2, Brain, Code, FileCode } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { profile } from "@/data/profile";
+import { profile, resumeHref } from "@/data/profile";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
@@ -33,7 +33,7 @@ export function Contact() {
         initial="hidden"
         whileInView="show"
         viewport={viewportOnce}
-        className="max-w-3xl text-balance text-4xl font-semibold tracking-tightest sm:text-5xl md:text-6xl"
+        className="max-w-3xl text-balance text-h1 font-semibold tracking-tightest"
       >
         Let's build something{" "}
         <span className="text-accent">worth maintaining.</span>
@@ -45,7 +45,7 @@ export function Contact() {
         whileInView="show"
         viewport={viewportOnce}
         transition={{ delay: 0.1 }}
-        className="mt-6 max-w-xl text-lg leading-relaxed text-muted"
+        className="mt-6 max-w-xl text-lead text-muted"
       >
         Open to conversations about frontend architecture, performance, and
         building thoughtful products. The fastest way to reach me is email.
@@ -63,7 +63,7 @@ export function Contact() {
           <Mail className="h-4 w-4" />
           {profile.email}
         </MagneticButton>
-        <MagneticButton href={profile.resumeHref} variant="outline">
+        <MagneticButton href={resumeHref} variant="outline">
           Résumé
           <ArrowUpRight className="h-4 w-4" />
         </MagneticButton>
@@ -81,7 +81,7 @@ export function Contact() {
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
-          className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"
         >
           {profile.socials.map((s) => {
             const Icon = iconFor[s.label] ?? Mail;

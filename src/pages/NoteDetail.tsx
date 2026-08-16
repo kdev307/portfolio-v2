@@ -44,11 +44,11 @@ export function NoteDetail() {
           </span>
         </div>
 
-        <h1 className="mt-5 text-balance text-4xl font-semibold tracking-tightest sm:text-5xl">
+        <h1 className="mt-5 text-balance text-h1 font-semibold tracking-tightest">
           {note.title}
         </h1>
 
-        <p className="mt-8 text-lg leading-relaxed text-muted">{note.summary}</p>
+        <p className="mt-8 text-lead text-muted">{note.summary}</p>
 
         <div className="mt-12 hairline pt-8">
           <h2 className="section-label mb-5">Key takeaways</h2>

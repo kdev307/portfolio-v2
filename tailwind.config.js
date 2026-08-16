@@ -35,6 +35,14 @@ export default {
       letterSpacing: {
         tightest: "-0.045em",
       },
+      // Fluid type — smooth scaling between mobile and desktop, no awkward jumps.
+      fontSize: {
+        display: ["clamp(2.6rem, 7.5vw, 5.75rem)", { lineHeight: "1.02" }],
+        h1: ["clamp(2.05rem, 5vw, 3.5rem)", { lineHeight: "1.06" }],
+        h2: ["clamp(1.7rem, 4vw, 2.75rem)", { lineHeight: "1.1" }],
+        h3: ["clamp(1.35rem, 2.6vw, 1.85rem)", { lineHeight: "1.2" }],
+        lead: ["clamp(1.02rem, 1.4vw, 1.2rem)", { lineHeight: "1.6" }],
+      },
       maxWidth: {
         content: "1120px",
       },
