@@ -163,6 +163,35 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  /* ── Watermark typography ─────────────────────────────────────────────
+     Large environmental lime words filled with a micro dot-grid instead of
+     flat colour, clipped to the glyphs. A faint stroke keeps the letterforms
+     legible at low contrast. Decorative only. */
+  .watermark-fill {
+    /* dot grid only, clipped to the text — no solid sheen. Kept faint so it
+       reads as background texture and never competes with foreground copy. */
+    background-image: radial-gradient(
+      rgba(190, 242, 100, 0.34) 1px,
+      transparent 1.4px
+    );
+    background-size: 8px 8px;
+    background-repeat: repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    /* faint stroke to hold the shape at low contrast */
+    -webkit-text-stroke: 1px rgba(190, 242, 100, 0.1);
+  }
+  @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+    /* graceful fallback: very low-opacity solid lime */
+    .watermark-fill {
+      color: rgba(190, 242, 100, 0.06);
+      -webkit-text-fill-color: rgba(190, 242, 100, 0.06);
+      background: none;
+    }
+  }
   .mask-fade-x {
     -webkit-mask-image: linear-gradient(
       to right,

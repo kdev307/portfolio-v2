@@ -8,6 +8,7 @@ import { Notes } from "@/sections/Notes";
 import { Exploring } from "@/sections/Exploring";
 import { Achievements } from "@/sections/Achievements";
 import { Contact } from "@/sections/Contact";
+import { AmbientField } from "@/components/graphics/AmbientField";
 import { scrollToSection } from "@/lib/sections";
 
 interface HomeProps {
@@ -29,15 +30,18 @@ export function Home({ onOpenPalette }: HomeProps) {
   }, [location.state, navigate]);
 
   return (
-    <main className="relative z-10">
-      <Landing onOpenPalette={onOpenPalette} />
-      <HowIThink />
-      <Experience />
-      <CaseStudies />
-      <Notes />
-      <Exploring />
-      <Achievements />
-      <Contact />
-    </main>
+    <>
+      <AmbientField />
+      <main className="relative z-10">
+        <Landing onOpenPalette={onOpenPalette} />
+        <HowIThink />
+        <Experience />
+        <CaseStudies />
+        <Notes />
+        <Exploring />
+        <Achievements />
+        <Contact />
+      </main>
+    </>
   );
 }

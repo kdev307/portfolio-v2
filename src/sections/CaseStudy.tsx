@@ -93,24 +93,33 @@ export function CaseStudy({
                             {project.id}
                         </span>
                     </div>
-                    <div className="relative flex h-64 items-center justify-center md:h-80">
-                        {/* faint blueprint grid */}
-                        <div
-                            aria-hidden
-                            className="pointer-events-none absolute inset-0 opacity-[0.5] [background-image:linear-gradient(theme(colors.border)_1px,transparent_1px),linear-gradient(90deg,theme(colors.border)_1px,transparent_1px)] [background-size:28px_28px] [mask-image:radial-gradient(circle_at_center,black,transparent_75%)]"
+                    {project.image ? (
+                        <img
+                            src={`${import.meta.env.BASE_URL}${project.image}`}
+                            alt={`${project.name} preview`}
+                            loading="lazy"
+                            className="block w-full object-cover"
                         />
-                        <div className="relative text-center">
+                    ) : (
+                        <div className="relative flex h-64 items-center justify-center md:h-80">
+                            {/* faint blueprint grid */}
                             <div
-                                className={`font-mono text-sm ${accentText[project.accent]}`}
-                            >
-                                {project.name}
-                            </div>
-                            <div className="mt-1 text-xs text-muted/60">
-                                visual — drop a capture at /public/{project.id}
-                                .png
+                                aria-hidden
+                                className="pointer-events-none absolute inset-0 opacity-[0.5] [background-image:linear-gradient(theme(colors.border)_1px,transparent_1px),linear-gradient(90deg,theme(colors.border)_1px,transparent_1px)] [background-size:28px_28px] [mask-image:radial-gradient(circle_at_center,black,transparent_75%)]"
+                            />
+                            <div className="relative text-center">
+                                <div
+                                    className={`font-mono text-sm ${accentText[project.accent]}`}
+                                >
+                                    {project.name}
+                                </div>
+                                <div className="mt-1 text-xs text-muted/60">
+                                    visual — drop a capture at /public/
+                                    {project.id}.png
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </Reveal>
 

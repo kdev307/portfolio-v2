@@ -1,5 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowDown, Briefcase, MapPin } from "lucide-react";
+import { useRef } from "react";
 import { profile } from "@/data/profile";
 import { marqueeTech } from "@/data/exploring";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -10,6 +11,8 @@ import { lineReveal, ease } from "@/lib/motion";
 import { scrollToSection } from "@/lib/sections";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
+const HERO_SPRING = { stiffness: 120, damping: 30, mass: 0.3 };
+
 interface LandingProps {
   onOpenPalette: () => void;
 }
@@ -18,8 +21,28 @@ const headlineWords = profile.headline.replace(".", "").split(" ");
 
 export function Landing({ onOpenPalette }: LandingProps) {
   const reduced = usePrefersReducedMotion();
+
+  // Scroll parallax — track the hero as it leaves the viewport.
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"] as never,
+  });
+
+  // Backdrop drifts down and fades as you scroll away (sits "further back").
+  const graphicYRaw = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [0, 150]);
+  const graphicY = useSpring(graphicYRaw, HERO_SPRING);
+  const graphicScale = useTransform(scrollYProgress, [0, 1], reduced ? [1, 1] : [1, 1.12]);
+  const graphicOpacity = useTransform(scrollYProgress, [0, 0.8], [0.55, 0]);
+
+  // Content lifts slightly faster than scroll (sits "closer") and fades out.
+  const contentYRaw = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [0, -70]);
+  const contentY = useSpring(contentYRaw, HERO_SPRING);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
   return (
     <section
+      ref={sectionRef}
       id="landing"
       className="relative flex min-h-svh flex-col justify-center px-6 pb-16 pt-28 sm:px-8"
     >
@@ -28,6 +51,7 @@ export function Landing({ onOpenPalette }: LandingProps) {
         initial={{ opacity: 0, scale: 0.85 }}
         animate={{ opacity: 0.55, scale: 1 }}
         transition={{ duration: 1.4, delay: 0.3, ease }}
+        style={{ y: graphicY, scale: graphicScale, opacity: graphicOpacity }}
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[min(92vw,860px)] w-[min(92vw,860px)] -translate-x-1/2 -translate-y-1/2"
       >
@@ -40,7 +64,10 @@ export function Landing({ onOpenPalette }: LandingProps) {
         </motion.div>
       </motion.div>
 
-      <div className="relative z-10 mx-auto w-full max-w-content">
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="relative z-10 mx-auto w-full max-w-content"
+      >
         {/* identity — spotlight on me */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -133,13 +160,14 @@ export function Landing({ onOpenPalette }: LandingProps) {
             <span className="text-muted">to explore</span>
           </MagneticButton>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* marquee pinned toward bottom */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.9, duration: 0.8 }}
+        style={{ y: contentY }}
         className="relative z-10 mx-auto mt-20 w-full max-w-content"
       >
         <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-muted/60">

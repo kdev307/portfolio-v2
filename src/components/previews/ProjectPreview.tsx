@@ -22,10 +22,23 @@ export function ProjectPreview({
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-gradient-to-r from-accent/[0.04] to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       />
-      <div className="relative grid gap-4 md:grid-cols-[auto_1fr_auto] md:items-center md:gap-8">
+      <div className="relative grid gap-4 md:grid-cols-[auto_auto_1fr_auto] md:items-center md:gap-8">
         <span className="font-mono text-xs text-muted/50 md:w-10">
           {String(index + 1).padStart(2, "0")}
         </span>
+
+        {project.image ? (
+          <div className="overflow-hidden rounded-lg border border-border bg-surface/40 md:w-44 lg:w-52">
+            <img
+              src={`${import.meta.env.BASE_URL}${project.image}`}
+              alt={`${project.name} preview`}
+              loading="lazy"
+              className="block aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+          </div>
+        ) : (
+          <span className="hidden md:block md:w-44 lg:w-52" aria-hidden />
+        )}
 
         <div className="min-w-0">
           <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">

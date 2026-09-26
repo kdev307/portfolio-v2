@@ -1,5 +1,5 @@
 import { Link, Navigate, useParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Linkedin } from "lucide-react";
 import { motion } from "framer-motion";
 import { notes } from "@/data/notes";
 import { PageBackdrop } from "@/components/graphics/PageBackdrop";
@@ -30,6 +30,7 @@ export function NoteDetail() {
 
       <ShimmerReveal skeleton={<NoteDetailSkeleton />}>
       <motion.article
+        key={note.id}
         variants={fadeUp}
         initial="hidden"
         animate="show"
@@ -55,8 +56,7 @@ export function NoteDetail() {
           <motion.ul
             variants={{ show: { transition: { staggerChildren: 0.08 } } }}
             initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
+            animate="show"
             className="space-y-4"
           >
             {note.takeaways.map((t) => (
@@ -71,6 +71,42 @@ export function NoteDetail() {
             ))}
           </motion.ul>
         </div>
+
+        {/* Read-on-LinkedIn CTA — only for notes published as a LinkedIn post */}
+        {note.linkedinUrl && (
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewportOnce}
+            className="mt-12 flex flex-col gap-4 rounded-2xl border border-border bg-surface/40 p-6 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div className="flex items-start gap-3">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-accent/30 bg-accent/[0.06] text-accent">
+                <Linkedin className="h-5 w-5" strokeWidth={1.75} />
+              </span>
+              <div>
+                <h2 className="text-lg font-medium text-text">
+                  Read the detailed note on LinkedIn
+                </h2>
+                <p className="mt-1 max-w-md text-sm leading-relaxed text-muted">
+                  This note started as a LinkedIn post — the full write-up, with
+                  the carousel and discussion, lives there.
+                </p>
+              </div>
+            </div>
+            <a
+              href={note.linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-accent/40 bg-accent/[0.06] px-4 py-2.5 text-sm font-medium text-accent transition-colors duration-300 hover:bg-accent/[0.12]"
+            >
+              <Linkedin className="h-4 w-4" strokeWidth={1.75} />
+              Read on LinkedIn
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          </motion.div>
+        )}
       </motion.article>
       </ShimmerReveal>
 

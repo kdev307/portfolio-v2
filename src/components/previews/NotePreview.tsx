@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Linkedin } from "lucide-react";
 import type { Note } from "@/data/notes";
 
 /**
@@ -23,6 +23,15 @@ export function NotePreview({ note, index }: { note: Note; index: number }) {
           <span className="rounded border border-border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wide text-muted">
             {note.category}
           </span>
+          {note.linkedinUrl && (
+            <span
+              title="Published on LinkedIn"
+              className="inline-flex items-center text-accent/80"
+            >
+              <Linkedin className="h-3.5 w-3.5" strokeWidth={2} />
+              <span className="sr-only">Published on LinkedIn</span>
+            </span>
+          )}
         </div>
         <p className="mt-2 max-w-2xl leading-relaxed text-muted line-clamp-2">
           {note.summary}

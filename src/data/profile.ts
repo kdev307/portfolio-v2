@@ -79,7 +79,7 @@ export const profile = {
   // Set driveUrl to your Drive share link. Leave it "" to use the local PDF.
   resume: {
     driveUrl: "https://drive.google.com/file/d/19nutUTr_vxiIEiiBq32UeEDGQyQ_K86r/view?usp=sharing",
-    fallback: "/DevKumar_Resume_07-26.pdf",
+    fallback: "/DevKumar_Resume.pdf",
   },
 } as const;
 
@@ -124,11 +124,13 @@ export const experience: ExperienceEntry[] = [
     summary:
       "Building and maintaining production Adobe Experience Manager applications inside a micro-frontend architecture — where dozens of independently-owned packages compose into one coherent, fast experience.",
     highlights: [
-      "Ship features across a micro-frontend estate, coordinating changes that span multiple packages without breaking downstream consumers.",
-      "Maintain shared component libraries — the contracts that let independent teams move without stepping on each other.",
+      "Ship features across a micro-frontend estate, coordinating changes that span multiple packages, and maintain the shared component libraries that let independent teams move without breaking each other.",
       "Debug SSR and hydration mismatches where server markup and client render diverge, tracing the exact boundary that drifts.",
-      "Cut time-to-interactive with critical CSS and disciplined asset loading on AEM-authored pages.",
-      "Tune Dispatcher and Akamai caching so the right response is served from the right layer — and invalidated when it should be.",
+      "Cut time-to-interactive with critical CSS and disciplined asset loading, and tune Dispatcher and Akamai caching so the right response is served from the right layer — and invalidated when it should be.",
+      "Build accessible, reusable modules — applying WCAG practices so components are usable and maintainable, not just visually correct.",
+      "Keep AEM page layouts and content structure consistent across applications, so authoring stays predictable and pages stay maintainable.",
+      "Contribute to code reviews and technical discussions, and run knowledge-transfer sessions on AEM, project architecture, and workflows for new joiners.",
+      "Deliver responsive website updates in Framer under tight deadlines — design refinements, variant fixes, and QA.",
     ],
     stack: [
       "AEM",
@@ -138,6 +140,8 @@ export const experience: ExperienceEntry[] = [
       "Critical CSS",
       "Dispatcher",
       "Akamai",
+      "WCAG / Accessibility",
+      "Framer",
     ],
   },
 ];

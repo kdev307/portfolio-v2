@@ -22,6 +22,12 @@ export interface Project {
   metrics: Metric[];
   future: string[];
   links?: { label: string; href: string }[];
+  /**
+   * Preview capture filename in /public (e.g. "connect-4.png"). Referenced via
+   * BASE_URL at render time so it resolves at both root and a subpath deploy.
+   * Omit for projects without a capture — the UI falls back to a placeholder.
+   */
+  image?: string;
   /** Set true to keep the data but hide it from all UI (lists, routes, palette). */
   hidden?: boolean;
 }
@@ -105,9 +111,10 @@ export const projects: Project[] = [
     id: "connect-4",
     name: "Connect 4",
     tagline: "Realtime multiplayer, built on a synchronized source of truth",
-    year: "2024",
+    year: "2025",
     kind: "Realtime Multiplayer Game",
     accent: "blue",
+    image: "connect-4.png",
     stack: ["React", "TypeScript", "Firebase", "Realtime Database"],
     summary:
       "A two-player Connect 4 you can share with a link. The engineering challenge was never the game — it was making two browsers agree on one board, instantly, with no accounts and no server of my own to run.",
@@ -177,9 +184,10 @@ export const projects: Project[] = [
     id: "woody",
     name: "Woody",
     tagline: "A furniture store where the cart is never wrong",
-    year: "2023",
+    year: "2024",
     kind: "E-commerce Platform",
     accent: "green",
+    image: "woody.png",
     stack: ["React", "Redux", "Django", "DRF", "PostgreSQL"],
     summary:
       "A full-stack furniture storefront with authentication, a product catalog, filtering, an admin dashboard, and a cart that stays correct whether you're logged in, logged out, or somewhere in between. The interesting engineering lived at the seam between client state and server state.",
@@ -241,8 +249,105 @@ export const projects: Project[] = [
       }
     ]
   },
+  {
+    id: "word-search",
+    name: "Word Search Puzzle",
+    tagline: "A 14×14 word hunt where every found word renders as one clean capsule",
+    year: "2026",
+    kind: "Browser Game",
+    accent: "green",
+    image: "word-search-puzzle.png",
+    stack: [
+      "React 19",
+      "Vite",
+      "Tailwind CSS v4",
+      "Context + Reducer",
+      "sessionStorage",
+      "canvas-confetti",
+    ],
+    summary:
+      "A relaxing word-search game: words hidden in every direction across a 14×14 grid, traced by dragging, scored against the clock, with hints and reveals when you're stuck. A single-page React app with no backend — all the interesting engineering is in state, grid generation, and getting diagonal selections to render cleanly.",
+    sections: [
+      {
+        heading: "Problem",
+        body: "A word search looks simple until you build one. You need a grid that hides real words in eight directions and fills the rest with plausible noise, a drag interaction that only accepts straight lines, a way to match a trace against the word list, and highlighting that reads cleanly whether a word runs across, down, or diagonally. And it all has to survive a page refresh mid-game.",
+      },
+      {
+        heading: "Architecture",
+        body: "One reducer holds the entire game: the grid, the word list, the current selection, found words, score, hints and reveals used, and the timer. Every state change persists to `sessionStorage` and restores on load, so a refresh resumes the current game. There's no backend — the whole thing runs in the browser and deploys as a static build to GitHub Pages.",
+        bullets: [
+          "Single reducer as the source of truth for grid, selection, score, assists, and timer.",
+          "sessionStorage persistence on every change; state rehydrates on load so a refresh doesn't lose the game.",
+          "Static SPA — no server — deployed to GitHub Pages.",
+        ],
+      },
+      {
+        heading: "Interesting Decisions",
+        body: "Locking the drag direction on the first move, then only extending along that straight line — so a selection is always a valid word axis, never a zigzag. Drawing each found word (and the active drag) as a single rounded capsule oriented along the word, so horizontal, vertical, and diagonal finds all render as the same clean pill rather than a staircase of highlighted cells.",
+        bullets: [
+          "Direction locks on the first drag move; the trace extends only along that axis.",
+          "Traced letters are matched against the word list on release, not on every cell.",
+          "Highlights render as one capsule oriented along the word — diagonals look as clean as rows.",
+        ],
+      },
+      {
+        heading: "Challenges",
+        body: "Grid generation is a placement problem: drop each word at a random position and one of eight directions without collisions, then fill the gaps with random letters that don't accidentally spell something. The reveal assist is a small search problem — locating a word's exact path on the grid with a depth-first search so it can be lit up correctly. Diagonal geometry made both selection math and capsule rendering fiddlier than the straight cases.",
+        bullets: [
+          "Place words 8-way at random without collisions, then fill remaining cells with noise.",
+          "Reveal runs a depth-first search to find a word's exact path before highlighting it.",
+          "Diagonal selection and capsule orientation needed their own geometry, not just row/column logic.",
+        ],
+      },
+      {
+        heading: "Outcome",
+        body: "A complete, playable puzzle: trace words in any direction, spend points on hints and reveals when stuck, beat the clock, and get a graded summary of score, time, and assists at the end. Progress saves automatically, so the game is refresh-proof, and it ships as a static build anyone can play in the browser.",
+      },
+      {
+        heading: "Lessons Learned",
+        body: "A single reducer plus persistence is a lot of leverage for game state — one place to reason about, one place to save and restore. And rendering is often where the real work hides: getting diagonal words to highlight as clean capsules took more thought than the game logic itself. When the geometry is the hard part, model it explicitly instead of special-casing.",
+      },
+    ],
+    metrics: [
+      { value: "14×14", label: "Grid, words hidden in 8 directions" },
+      { value: "1", label: "Reducer holds the entire game state" },
+      { value: "0", label: "Backend — refresh-proof via sessionStorage" },
+    ],
+    future: [
+      "Selectable difficulty via grid size and word count.",
+      "Daily puzzle seeded from the date so everyone plays the same board.",
+      "Accessible keyboard selection as an alternative to click-and-drag.",
+    ],
+    links: [
+      {
+        label: "Source Code",
+        href: "https://github.com/kdev307/word-search-puzzle",
+      },
+      {
+        label: "Live Demo",
+        href: "https://kdev307.github.io/word-search-puzzle/",
+      },
+    ],
+  },
 ];
 
-// What the UI renders — everything not explicitly hidden. Toggle a project's
-// `hidden` flag above to add/remove it without touching any component.
-export const visibleProjects = projects.filter((p) => !p.hidden);
+// Display order for the case-study list — most recent / highest-signal first.
+// Newest, most current-thinking work leads (2025), older full-stack depth
+// follows. Any visible project not listed here is appended in source order.
+const displayOrder = [
+  "word-search", // 2026 · complete, live demo
+  "connect-4", // 2025 · realtime systems
+  "woody", // 2024 · full-stack depth
+];
+
+// What the UI renders — everything not explicitly hidden, in `displayOrder`.
+// Toggle a project's `hidden` flag above to add/remove it without touching any
+// component; reorder by editing `displayOrder`.
+export const visibleProjects = projects
+  .filter((p) => !p.hidden)
+  .sort((a, b) => {
+    const ai = displayOrder.indexOf(a.id);
+    const bi = displayOrder.indexOf(b.id);
+    // Unlisted ids sort after listed ones, keeping their relative order.
+    return (ai === -1 ? Infinity : ai) - (bi === -1 ? Infinity : bi);
+  });

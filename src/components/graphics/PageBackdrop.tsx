@@ -1,5 +1,7 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+
+const SPRING = { stiffness: 80, damping: 30, mass: 0.4 };
 
 interface PageBackdropProps {
   /** Big faint watermark word for the route, e.g. "WORK" / "NOTES". */
@@ -23,6 +25,21 @@ const dots = [
  */
 export function PageBackdrop({ label }: PageBackdropProps) {
   const reduced = usePrefersReducedMotion();
+  const { scrollYProgress } = useScroll();
+
+  // Scroll parallax — layers move at different depths as the page scrolls.
+  const gridY = useSpring(
+    useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [0, -120]),
+    SPRING
+  );
+  const watermarkY = useSpring(
+    useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [0, 200]),
+    SPRING
+  );
+  const glowY = useSpring(
+    useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [0, 120]),
+    SPRING
+  );
 
   return (
     <motion.div
@@ -33,16 +50,22 @@ export function PageBackdrop({ label }: PageBackdropProps) {
       className="pointer-events-none fixed inset-0 -z-[5] overflow-hidden"
     >
       {/* accent glow */}
-      <div className="absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-accent/[0.06] blur-[130px]" />
+      <motion.div
+        style={{ y: glowY }}
+        className="absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-accent/[0.06] blur-[130px]"
+      />
 
       {/* blueprint grid, faded at the edges */}
-      <div className="absolute inset-0 opacity-[0.35] [background-image:linear-gradient(theme(colors.border)_1px,transparent_1px),linear-gradient(90deg,theme(colors.border)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(circle_at_60%_35%,black,transparent_70%)]" />
+      <motion.div
+        style={{ y: gridY }}
+        className="absolute -inset-y-24 inset-x-0 opacity-[0.35] [background-image:linear-gradient(theme(colors.border)_1px,transparent_1px),linear-gradient(90deg,theme(colors.border)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(circle_at_60%_35%,black,transparent_70%)]"
+      />
 
       {/* watermark */}
       <motion.span
         className="absolute right-[-1%] top-[14%] select-none font-semibold leading-none tracking-tightest text-white/[0.028]"
-        style={{ fontSize: "clamp(7rem, 22vw, 20rem)" }}
-        animate={reduced ? undefined : { x: [0, -24, 0], y: [0, 10, 0] }}
+        style={{ fontSize: "clamp(7rem, 22vw, 20rem)", y: watermarkY }}
+        animate={reduced ? undefined : { x: [0, -24, 0] }}
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       >
         {label}
