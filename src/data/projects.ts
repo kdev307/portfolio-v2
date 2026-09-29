@@ -172,11 +172,11 @@ export const projects: Project[] = [
     links: [
       {
         label: 'Source Code',
-        href: 'github link'
+        href: 'https://github.com/kdev307/connect-4'
       },
       {
         label: 'Live Demo',
-        href: 'live link'
+        href: 'https://connect-4-game-online.vercel.app/'
       }
     ]
   },
@@ -245,7 +245,7 @@ export const projects: Project[] = [
     links: [
       {
         label: 'Source Code',
-        href: 'github link'
+        href: 'https://github.com/kdev307/django-react-ecommerce-app'
       }
     ]
   },
